@@ -1,6 +1,6 @@
 ---
-title: "Introdução ao R aplicado a pesquisas em empreendedorismo"
-subtitle: "R aplicado ao Global Entrepreneurship Monitor"
+title: "Explorando Dados Secundários para Pesquisas em Empreendedorismo usando o R"
+subtitle: "Explorando dados do Global Entrepreneurship Monitor"
 author: "Daniel Pagotto, MSc. (PPGA-UnB, LAPEI-UFG) e Cândido Borges, PhD. (PPGADM-UFG, LAPEI-UFG)"
 contact: "danielppagotto@gmail.com"
 output:
