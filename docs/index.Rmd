@@ -1,9 +1,8 @@
 ---
 title: "Introdução ao R aplicado a pesquisas em empreendedorismo"
 subtitle: "R aplicado ao Global Entrepreneurship Monitor"
-author: "Daniel Pagotto"
+author: "Daniel Pagotto, Msc. (PPGA-UnB, LAPEI-UFG) e Cândido Borges, PhD. (PPGADM-UFG, LAPEI-UFG)"
 contact: "danielppagotto@gmail.com"
-institute: "LAPEI/UFG e CIGETS/UFG"
 output:
   xaringan::moon_reader:
     css: [default,metropolis,metropolis-fonts]
@@ -16,36 +15,22 @@ library(DT)
 
 # Agradecimentos
 <br>
-```{r agradecimentos, figures-side, fig.show="hold", echo=FALSE, out.height="100%", out.width="100%", fig.align='center', fig.height=4, fig.cap=" "}
+<br>
+<br>
+```{r agradecimentos, figures-side, fig.show="hold", echo=FALSE, out.height="60%", out.width="70%", fig.align='center', fig.height=4, fig.cap=" "}
 
 knitr::include_graphics("imagem/semead.png")
 
 ```
 
-
-class: inverse, middle, left
-# Divisão do curso 
-* **Módulo 1: conceitos básicos de R** 
-  + Cálculos básicos
-  + Tipos de variáveis e objetos
-  + O pacote dplyr para manipulação de dataframes
-  + O pacote ggplot2 para visualização de dados
-* **Módulo 2: usando o R para explorar o Global Entrepreneurship Monitor (GEM)**
-  + Compreendedo as bases 
-  + Tratando as bases 
-  + Análise Exploratória dos Dados do GEM
-* **Módulo 3: usando o R para explorar o Panel Study of Entrepreneurial Dynamics (PSED)**
-  + Compreendendo a base
-  + Tratando a base 
-  + Análise Exploratória dos Dados do PSED
-
 ---
 class: inverse, middle, left
-# Objetivos do módulo 2
+# Objetivos do treinamento
 - Demonstrar relevância do GEM
 - Explorar variáveis disponíveis no GEM 
 - Aplicar funções para manipular dataframes 
 - Aplicar análise exploratória dos dados
+- Aplicar funções de visualização de dados 
 
 ---
 # Global  Entrepreneurship Monitor 
@@ -160,6 +145,26 @@ gem_especialistas <- read_delim("https://raw.githubusercontent.com/danielppagott
 # Vamos usar o glimpse para conferir a base 
 glimpse(gem_especialistas)
 ```
+---
+# Função filter
+Permite filtrar observações de uma base a partir de alguma condição. 
+
+```{r filter, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, r echo = T, results='hide'}
+gem_especialistas %>%  
+  filter(economy == "Brazil")
+
+
+gem_especialistas %>%  
+  filter(year > 2015)
+
+
+chile_pos2015 <- gem_especialistas %>% 
+  filter(year > 2015 & economy == "Chile")
+
+```
+
+
+
 ---
 # Explorando a base de especialistas
 Vamos baixar a base e comparar alguns países: Brasil, Chile, Colômbia e México. 

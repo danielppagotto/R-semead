@@ -3,7 +3,7 @@
   <head>
     <title>Introdução ao R aplicado a pesquisas em empreendedorismo</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Daniel Pagotto" />
+    <meta name="author" content="Daniel Pagotto, Msc. (PPGA-UnB, LAPEI-UFG) e Cândido Borges, PhD. (PPGADM-UFG, LAPEI-UFG)" />
     <link href="index_files/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="index_files/remark-css-0.0.1/metropolis.css" rel="stylesheet" />
     <link href="index_files/remark-css-0.0.1/metropolis-fonts.css" rel="stylesheet" />
@@ -14,8 +14,7 @@ class: center, middle, inverse, title-slide
 
 # Introdução ao R aplicado a pesquisas em empreendedorismo
 ## R aplicado ao Global Entrepreneurship Monitor
-### Daniel Pagotto
-### LAPEI/UFG e CIGETS/UFG
+### Daniel Pagotto, Msc. (PPGA-UnB, LAPEI-UFG) e Cândido Borges, PhD. (PPGADM-UFG, LAPEI-UFG)
 
 ---
 
@@ -23,35 +22,21 @@ class: center, middle, inverse, title-slide
 
 # Agradecimentos
 &lt;br&gt;
+&lt;br&gt;
+&lt;br&gt;
 &lt;div class="figure" style="text-align: center"&gt;
-&lt;img src="imagem/semead.png" alt=" " width="100%" height="100%" /&gt;
+&lt;img src="imagem/semead.png" alt=" " width="70%" height="60%" /&gt;
 &lt;p class="caption"&gt; &lt;/p&gt;
 &lt;/div&gt;
 
-
-class: inverse, middle, left
-# Divisão do curso 
-* **Módulo 1: conceitos básicos de R** 
-  + Cálculos básicos
-  + Tipos de variáveis e objetos
-  + O pacote dplyr para manipulação de dataframes
-  + O pacote ggplot2 para visualização de dados
-* **Módulo 2: usando o R para explorar o Global Entrepreneurship Monitor (GEM)**
-  + Compreendedo as bases 
-  + Tratando as bases 
-  + Análise Exploratória dos Dados do GEM
-* **Módulo 3: usando o R para explorar o Panel Study of Entrepreneurial Dynamics (PSED)**
-  + Compreendendo a base
-  + Tratando a base 
-  + Análise Exploratória dos Dados do PSED
-
 ---
 class: inverse, middle, left
-# Objetivos do módulo 2
+# Objetivos do treinamento
 - Demonstrar relevância do GEM
 - Explorar variáveis disponíveis no GEM 
 - Aplicar funções para manipular dataframes 
 - Aplicar análise exploratória dos dados
+- Aplicar funções de visualização de dados 
 
 ---
 # Global  Entrepreneurship Monitor 
@@ -169,6 +154,14 @@ glimpse(gem_especialistas)
 ## $ physical_infrastructure                &lt;dbl&gt; 2.23, 4.20, 3.40, 2.76, 3.99, 3~
 ## $ cultural_social_norms                  &lt;dbl&gt; 2.85, 2.63, 2.89, 2.60, 3.05, 3~
 ```
+---
+# Função filter
+Permite filtrar observações de uma base a partir de alguma condição. 
+
+
+
+
+
 ---
 # Explorando a base de especialistas
 Vamos baixar a base e comparar alguns países: Brasil, Chile, Colômbia e México. 
