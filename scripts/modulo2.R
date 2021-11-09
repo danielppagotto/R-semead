@@ -1,6 +1,5 @@
-# Curso de R 
-# Mod. 2 - R aplicado ao GEM 
-# Desenvolvido por Daniel do Prado Pagotto (LAPEI-UFG)
+# Explorando dados do GEM
+# Desenvolvido por Daniel do Prado Pagotto (LAPEI-UFG) para o Semead-USP
 
 # Os "#" representam um comentario. O R pula as linhas que tiverem esse #
 # Para rodar cada linha, coloque o cursor sobre a linha do comando e 
@@ -25,8 +24,6 @@ library(ggplot2)
 library(ggrepel) 
 library(directlabels)
 library(GGally)
-
-
 
 #  Bases GEM-NES - National Expert Survey ---------------------------------
 

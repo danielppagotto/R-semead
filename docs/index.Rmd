@@ -1,6 +1,6 @@
 ---
 title: "Explorando dados secundários para pesquisas em empreendedorismo usando R"
-subtitle: "Explorando dados do Global Entrepreneurship Monitor"
+subtitle: "Aplicação prática com dados Global Entrepreneurship Monitor"
 author: "Daniel Pagotto, MSc. (PPGA-UnB, LAPEI-UFG) e Cândido Borges, PhD. (PPGADM-UFG, LAPEI-UFG)"
 contact: "danielppagotto@gmail.com"
 output:
