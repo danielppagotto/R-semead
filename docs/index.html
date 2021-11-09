@@ -356,17 +356,14 @@ wgidataset &lt;- read_csv("https://raw.githubusercontent.com/danielppagotto/R_em
 
 gem_aps &lt;- read_delim("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo2/main/arquivos%20de%20bases/gem_2019_aps.csv", ";", escape_double = FALSE, trim_ws = TRUE)
 
-# juntando as bases
+# Juntando bases e selecionando as variaveis de interesse 
 gem_wgid &lt;- gem_aps %&gt;% 
-                  left_join(wgidataset, by = c("abrev" = "code")) 
-
-# selecionando as variaveis de interesse 
-gem_wgid &lt;- gem_wgid %&gt;% 
-                  select(economy, continent, tea, perceived_opportunities,
-                         fear_failure, established_ownership, 
-                         entrepreneurship_as_good_carrer_choice,
-                         corruption, rule_of_law, regulatory_quality, 
-                         political_stability, voice_accountability)
+            left_join(wgidataset, by = c("abrev" = "code")) %&gt;% 
+            select(economy, continent, tea, perceived_opportunities,
+                   fear_failure, established_ownership, 
+                   entrepreneurship_as_good_carrer_choice,corruption, 
+                   rule_of_law, regulatory_quality, political_stability, 
+                   voice_accountability)
 
 # inspecionando estatisca descritiva 
 gem_wgid %&gt;%
@@ -424,7 +421,6 @@ fig1 / fig2
 ```
 
 &lt;img src="index_files/figure-html/patchwork-1.png" style="display: block; margin: auto;" /&gt;
-
 
 ---
 # Explorando mais... 
@@ -492,7 +488,7 @@ class: inverse, middle, center
 
 # Obrigado
 
-**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/)
+**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/) | @lapeiufg
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

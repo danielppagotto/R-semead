@@ -342,17 +342,14 @@ wgidataset <- read_csv("https://raw.githubusercontent.com/danielppagotto/R_empre
 
 gem_aps <- read_delim("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo2/main/arquivos%20de%20bases/gem_2019_aps.csv", ";", escape_double = FALSE, trim_ws = TRUE)
 
-# juntando as bases
+# Juntando bases e selecionando as variaveis de interesse 
 gem_wgid <- gem_aps %>% 
-                  left_join(wgidataset, by = c("abrev" = "code")) 
-
-# selecionando as variaveis de interesse 
-gem_wgid <- gem_wgid %>% 
-                  select(economy, continent, tea, perceived_opportunities,
-                         fear_failure, established_ownership, 
-                         entrepreneurship_as_good_carrer_choice,
-                         corruption, rule_of_law, regulatory_quality, 
-                         political_stability, voice_accountability)
+            left_join(wgidataset, by = c("abrev" = "code")) %>% 
+            select(economy, continent, tea, perceived_opportunities,
+                   fear_failure, established_ownership, 
+                   entrepreneurship_as_good_carrer_choice,corruption, 
+                   rule_of_law, regulatory_quality, political_stability, 
+                   voice_accountability)
 
 # inspecionando estatisca descritiva 
 gem_wgid %>%
@@ -474,6 +471,6 @@ class: inverse, middle, center
 
 # Obrigado
 
-**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/)
+**Daniel Pagotto** | danielppagotto@gmail.com | [LinkedIn](https://www.linkedin.com/in/daniel-do-prado-pagotto-bab62a50/) | @lapeiufg
 
 
