@@ -133,7 +133,7 @@ Vamos começar lendo a base a partir do meu repositório do github:
 ```{r lendo_nes, message=FALSE, warning=FALSE}
 library(readr); library(dplyr); library(skimr)
 library(ggplot2); library(ggrepel); library(directlabels)
-library(GGally)
+library(GGally); library(ggridges); library(patchwork)
 
 gem_especialistas <- read_delim("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo2/main/arquivos%20de%20bases/gem_nes_historico.csv", ";", escape_double = FALSE, trim_ws = TRUE)
 
@@ -146,30 +146,55 @@ gem_especialistas <- read_delim("https://raw.githubusercontent.com/danielppagott
 glimpse(gem_especialistas)
 ```
 ---
-# Função filter
-Permite filtrar observações de uma base a partir de alguma condição. 
+# Funções select e filter
+A função `select` permite selecionar variáveis (colunas) de interesse. A função `filter` permite filtrar observações de uma base a partir de alguma condição. 
 
-```{r filter, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE, r echo = T, results='hide'}
+```{r filter, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
+gem_especialistas %>% 
+  select(economy, year, financing, gov_support)
+
 gem_especialistas %>%  
   filter(economy == "Brazil")
-
 
 gem_especialistas %>%  
   filter(year > 2015)
 
+gem_especialistas %>% 
+  filter(year > 2015 & economy == "Chile") %>% 
+  select(year, economy, gov_programs, rd_transfer)
 
 chile_pos2015 <- gem_especialistas %>% 
-  filter(year > 2015 & economy == "Chile")
+  filter(year > 2015 & economy == "Chile") %>% 
+  select(year, economy, gov_programs, rd_transfer)
+```
+
+---
+# Funções group_by e summarize
+
+As funções `group_by` e `summarize` são geralmente aplicadas de modo conjunto. A primeira agrupa qualquer observação que seja igual em uma variável. A segunda vai aplicar algum cálculo a partir deste agrupamento. 
+
+```{r group_by, echo=TRUE, message=FALSE, warning=FALSE, results='hide'}
+
+cont_paises <- gem_especialistas %>% 
+                  group_by(economy) %>% 
+                  summarise(total = n())
+                  
+chile_brazil <- gem_especialistas %>% 
+                    filter(economy == "Brazil" | economy == "Chile") %>% 
+                    filter(year > 2015)
+
+chile_brazil %>% 
+  group_by(economy) %>% 
+  summarise(media_gov_programas = mean(gov_programs),
+            media_rd_transfer = mean(rd_transfer),
+            sd_gov_programas = sd(gov_programs),
+            sd_rd_transfer = sd(rd_transfer))
 
 ```
 
-
-
 ---
 # Explorando a base de especialistas
-Vamos baixar a base e comparar alguns países: Brasil, Chile, Colômbia e México. 
-
-Além disso, vamos separar algumas variáveis de interesse: `economy`, `year`, `gov_support`, `taxes_bureaucracy`, `gov_programs`, `internal_market_dynamics`.
+Agora que vocês aprenderam algumas funções importantes de manipulação de dados, vamos aplicá-los. Também vamos aprender a função `skim` e o um pouco do pacote ggplot2. Vamos comparar alguns países - Brasil, Chile, Colômbia e México - para as seguintes variáveis de interesse: `economy`, `year`, `gov_support`, `taxes_bureaucracy`, `gov_programs`, `internal_market_dynamics`.
 <br>
 
 ```{r filte_gem, message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
@@ -253,8 +278,7 @@ gem_paises_selecionados %>%
   ggplot(aes(year,gov_support, col = economy)) + geom_line(size = 2) +
   geom_dl(aes(label = economy), method = list(dl.combine("first.points", "last.points"))) +
   theme_minimal() + xlab("Ano") + ylab("Suporte Governamental") + theme(legend.position = "none") +
-  theme(plot.title = element_text(size=22)) + theme(axis.title.y = element_text(size = rel(1.2), angle = 90)) + theme(axis.title.x = element_text(size = rel(1.2), angle = 0)) + ggtitle("Suporte Governamental", "Comparação entre Brasil, Chile, Colombia e México - Dados GEM") +
-scale_x_continuous(breaks = seq(2010,2020,1)) 
+  theme(plot.title = element_text(size=22)) + theme(axis.title.y = element_text(size = rel(1.2), angle = 90)) + theme(axis.title.x = element_text(size = rel(1.2), angle = 0)) + ggtitle("Suporte Governamental", "Comparação entre Brasil, Chile, Colombia e México - Dados GEM") + scale_x_continuous(breaks = seq(2010,2020,1)) 
 
 ```
 ---
@@ -269,6 +293,7 @@ knitr::include_graphics("https://media.giphy.com/media/H1f1T0tKK4jEfNt6MG/giphy.
 <br>
 Fonte: [giphy](https://media.giphy.com/media/H1f1T0tKK4jEfNt6MG/giphy.gif)
 ---
+
 # Explorando dados de APS
 Os dados consolidados do levantamento com população adulta é composto pelas seguintes variáveis: 
 
@@ -304,26 +329,32 @@ As variáveis variam entre -2,5 (fraco índice de governança) a 2,5 (forte índ
 
 * **Voice and Accountability**: reflete as percepções sobre o nível em que os cidadãos de um país podem participar da seleção de seu governo, bem como a liberdade de expressão, a liberdade de associação e a liberdade de mídia.
 ---
+
 # Juntando bases
 
-Vamos juntar as bases, selecionar as variáveis de interesse e, finalmente, inspecionar alguns dados de estatística descritiva por continente. 
+Vamos ler as bases, juntá-las e, em sequência, selecionar as variáveis de interesse. Em seguida, fazemos mais algumas análises por continente. 
 
 Lendo as bases a partir do GitHub
 ```{r lendobasess, message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
 
+# lendo as bases
 wgidataset <- read_csv("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo2/main/arquivos%20de%20bases/wgi.csv")
 
 gem_aps <- read_delim("https://raw.githubusercontent.com/danielppagotto/R_empreendedorismo2/main/arquivos%20de%20bases/gem_2019_aps.csv", ";", escape_double = FALSE, trim_ws = TRUE)
 
+# juntando as bases
 gem_wgid <- gem_aps %>% 
-                  left_join(wgidataset, by = c("abrev" = "code")) %>% 
+                  left_join(wgidataset, by = c("abrev" = "code")) 
+
+# selecionando as variaveis de interesse 
+gem_wgid <- gem_wgid %>% 
                   select(economy, continent, tea, perceived_opportunities,
                          fear_failure, established_ownership, 
                          entrepreneurship_as_good_carrer_choice,
                          corruption, rule_of_law, regulatory_quality, 
                          political_stability, voice_accountability)
 
-
+# inspecionando estatisca descritiva 
 gem_wgid %>%
   group_by(continent) %>% 
   skim() 
@@ -335,6 +366,54 @@ gem_wgid %>%
 gem_wgid %>% select(-economy,-continent) %>% 
   ggpairs()
 ```
+
+---
+# Explorando variáveis 
+Vamos explorar as variávies `politicial_stability` e `entrepreneurship_as_good_carrer_choice`. 
+
+```{r estabilidade0, fig.height=5, message=FALSE, warning=FALSE, fig.align='center'}
+gem_wgid %>% 
+  ggplot(aes(x = political_stability, y = continent)) + geom_density_ridges() + 
+  theme_ridges() + xlab("Political stability")
+
+
+```
+
+---
+# Explorando mais...
+
+```{r estabilidade0_1, fig.height=5, message=FALSE, warning=FALSE, fig.align='center'}
+gem_wgid %>% 
+  ggplot(aes(x = entrepreneurship_as_good_carrer_choice, y = continent)) + geom_density_ridges() + 
+  theme_ridges() + xlab("Entrepreneurship as a good carrer of choice")
+
+
+```
+
+---
+# Dica extra! 
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+fig1 <- gem_wgid %>% 
+  ggplot(aes(x = political_stability, y = continent)) + geom_density_ridges() + 
+  theme_ridges() + xlab("Political stability")
+
+fig2 <- gem_wgid %>% 
+  ggplot(aes(x = entrepreneurship_as_good_carrer_choice, y = continent)) + geom_density_ridges() + 
+  theme_ridges() + xlab("Entrepreneurship as a good carrer of choice")
+```
+
+
+
+```{r patchwork, message=FALSE, warning=FALSE, fig.align='center'}
+
+library(patchwork)
+
+fig1 / fig2
+
+
+```
+
 ---
 # Explorando mais... 
 
@@ -355,17 +434,19 @@ gem_wgid %>%
   geom_point(aes(col = continent, size = 1.5)) + 
   theme_minimal() + geom_text_repel(aes(label = economy)) + 
   theme(legend.position = "none") + geom_smooth(method = "lm", se = FALSE)
-
 ```
+
 ---
 # Aplicando facet_grid()
 ```{r estabilidade3, fig.height=5, message=FALSE, warning=FALSE, fig.align='center'}
+
 gem_wgid %>% 
   ggplot(aes(x = political_stability, y = entrepreneurship_as_good_carrer_choice)) +
   geom_point(aes(col = continent, size = 1.5)) + facet_grid(~continent) +
   theme_minimal() + theme(legend.position = "none") + geom_smooth(method = "lm", se = FALSE)
 
 ```
+
 ---
 # Podemos voltar ao GGAlly
 Podemos fazer filtragem de um continente apenas e verificar o resultados das variáveis
